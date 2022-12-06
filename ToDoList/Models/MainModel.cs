@@ -6,44 +6,62 @@ namespace ToDoList;
 
 public class MainModel
 {
-    private DateTime _currentDate = DateTime.Today;
 
-    public Dictionary<string, List<TaskModel>> TasksDictionary = new();
-
-    private void CheckOverdueTasks()
-    {
-        TasksDictionary["overdue"] = new List<TaskModel>();
-        foreach (var taskDate in TasksDictionary.Keys
-                     .Where(taskDate => DateTime.Parse(taskDate) < _currentDate))
-        {
-            TasksDictionary["overdue"].AddRange(TasksDictionary[taskDate]);
-            TasksDictionary.Remove(taskDate);
-        }
-    }
+    public List<TaskModel> TaskList = new();
 
     public void AddTask(string task, int year, int month, int day)
     {
-        var taskModel = new TaskModel(task, new DateTime(year, month, day));
-        var strDate = taskModel.DeadLine.ToShortDateString();
-        if (TasksDictionary.ContainsKey(strDate))
-            TasksDictionary[strDate].Add(taskModel);
-        else
-            TasksDictionary[strDate] = new List<TaskModel> { taskModel };
+        TaskList.Add(new TaskModel(task, new DateTime(year, month, day)));
     }
 
-    public void AddTaskWithoutDate(string task)
+    public void AddTask(string task)
     {
-        TasksDictionary["Without date"].Add(new TaskModel(task));
+        TaskList.Add(new TaskModel(task));
     }
 
     public void RemoveTask(string taskDate, TaskModel task)
     {
-        TasksDictionary[taskDate].Remove(task);
+        TaskList.Remove(task);
     }
-    
+
+    public Dictionary<string, List<TaskModel>> SortTask()
+    {
+        var taskDictionary = new Dictionary<string, List<TaskModel>>
+        {
+            ["Overdue"] = new(),
+            ["Without date"] = new()
+        };
+        foreach (var task in TaskList)
+        {
+            if (task.DeadLine == default)
+                taskDictionary["Without date"].Add(task);
+            else if (task.DeadLine < DateTime.Today)
+                taskDictionary["Overdue"].Add(task);
+            else if (taskDictionary.ContainsKey(task.DeadLine.ToShortDateString()))
+                taskDictionary[task.DeadLine.ToShortDateString()].Add(task);
+            else
+                taskDictionary[task.DeadLine.ToShortDateString()] = new List<TaskModel> { task };
+
+        }
+
+        return taskDictionary;
+    }
+
     public MainModel()
     {
-        CheckOverdueTasks();
+        TaskList.Add(new TaskModel("почесать жопу", DateTime.Today));
+        TaskList.Add(new TaskModel("почесать жопу", DateTime.Today));
+        TaskList.Add(new TaskModel("почесать жопу", new DateTime(2005, 3, 4)));
+        TaskList.Add(new TaskModel("покакать"));
+        TaskList.Add(new TaskModel("почесать жопу", DateTime.Today));
+        TaskList.Add(new TaskModel("почесать жопу", DateTime.Today));
+        TaskList.Add(new TaskModel("почесать жопу", new DateTime(2005, 3, 4)));
+        TaskList.Add(new TaskModel("покакать"));
+        TaskList.Add(new TaskModel("почесать жопу", DateTime.Today));
+        TaskList.Add(new TaskModel("почесать жопу", DateTime.Today));
+        TaskList.Add(new TaskModel("почесать жопу", new DateTime(2005, 3, 4)));
+        TaskList.Add(new TaskModel("покакать"));
+
     }
 
 }
