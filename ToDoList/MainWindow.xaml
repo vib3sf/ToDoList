@@ -3,10 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:ToDoList"
         xmlns:viewModel="clr-namespace:ToDoList.ViewModel"
+        xmlns:system="clr-namespace:System;assembly=System.Runtime"
         mc:Ignorable="d"
-        Title="MainWindow" Height="250" Width="400">
+        Title="MainWindow" Height="600" Width="400" ResizeMode="NoResize">
     
     <Window.DataContext>
         <viewModel:MainViewModel/>
@@ -16,31 +16,61 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="30"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <ListBox ItemsSource="{Binding SortedTaskDictionary}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel>
-                        <TextBlock Text="{Binding Key}"/>
-                        <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding Value}">
+                    <Expander Header="{Binding Key}">
+                        <DataGrid AutoGenerateColumns="False"
+                                  ItemsSource="{Binding Value}">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Binding="{Binding Task}" IsReadOnly="False" Header="ToDo" Width="350"/>
-                                <DataGridCheckBoxColumn Binding="{Binding Path=IsDone, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="False" Header="Done"/>
+                                <DataGridTextColumn Binding="{Binding Task}" IsReadOnly="False" Header="Task"
+                                                    Width="320"/>
+                                <DataGridCheckBoxColumn Binding="{Binding Path=IsDone, UpdateSourceTrigger=PropertyChanged}" 
+                                                        IsReadOnly="False" Header="Done" Width="45"/>
                             </DataGrid.Columns>
+                            <DataGrid.ContextMenu>
+                                <ContextMenu>
+                                    <ContextMenu.DataContext>
+                                        <viewModel:MainViewModel></viewModel:MainViewModel>
+                                    </ContextMenu.DataContext>
+                                    <MenuItem Command="{Binding RemoveCommand}" Header="Remove"/>
+                                </ContextMenu>
+                            </DataGrid.ContextMenu>
                         </DataGrid>
-                    </StackPanel>
+                    </Expander>
                 </DataTemplate>
             </ListBox.ItemTemplate>
+            <ListBox.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Remove" Command="{Binding RemoveCommand}"/>
+                </ContextMenu>
+            </ListBox.ContextMenu>
         </ListBox>
         <Grid Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="40"/>
-                <ColumnDefinition Width="40"/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="1" Width="25" Height="25" HorizontalAlignment="Right" />
-            <Button Grid.Column="2" Width="25" Height="25" HorizontalAlignment="Right" Margin="5, 0"/>
+        
+            <TextBlock Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="5" Text="Task:"/>
+            <TextBox Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="5" 
+                     Text="{Binding TaskTextBlock, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        
+            <TextBlock Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Margin="5" Text="Date:"/>
+            <DatePicker Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Margin="5"
+                        SelectedDate="{Binding Path=CreateTaskDate, Mode=TwoWay,
+                        TargetNullValue={x:Static system:DateTime.Now}}"/>
+            <Button Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"  Margin = "5" 
+                    Width = "50" HorizontalAlignment="Center" Command="{Binding CreateCommand}">Create
+            </Button>
         </Grid>
     </Grid>
 </Window>
