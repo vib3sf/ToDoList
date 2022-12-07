@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Windows;
-using System.Windows.Input;
 using Prism.Commands;
 using Prism.Mvvm;
 
@@ -9,7 +7,7 @@ namespace ToDoList.ViewModel;
 
 public class MainViewModel : BindableBase
 {
-    private MainModel _mainModel = new();
+    private readonly MainModel _mainModel = new();
     public Dictionary<string, List<TaskModel>> SortedTaskDictionary => _mainModel.SortTask();
     public DelegateCommand CreateCommand { get; }
     
