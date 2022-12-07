@@ -15,40 +15,52 @@
     
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <ListBox ItemsSource="{Binding SortedTaskDictionary}">
+        
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            
+            <TextBlock Grid.ColumnSpan="2" HorizontalAlignment="Center" Text="Task Manager"/>
+            <Button Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" HorizontalAlignment="Right" Margin="10"
+                    Height="30" Width="30" Command="{Binding RefreshCommand}">
+                <Image Source="Icons/refresh.png"></Image>
+            </Button>
+            
+            <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" 
+                       Text="{Binding CurrentDate}"></TextBlock>
+            
+        </Grid>
+        
+        <ListBox Grid.Row="1" ItemsSource="{Binding SortedTaskDictionary}" SelectedItem="{Binding SelectedTask}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Expander IsExpanded="True" Header="{Binding Key}">
-                        <DataGrid AutoGenerateColumns="False"
-                                  ItemsSource="{Binding Value}">
+                        <DataGrid AutoGenerateColumns="False" GridLinesVisibility="None"
+                                  ItemsSource="{Binding Value}" CanUserAddRows="False" >
                             <DataGrid.Columns>
-                                <DataGridTextColumn Binding="{Binding Task}" IsReadOnly="True" Header="Task"
-                                                    Width="320"/>
-                                <DataGridCheckBoxColumn Binding="{Binding Path=IsDone, UpdateSourceTrigger=PropertyChanged}" 
+                                <DataGridTextColumn Binding="{Binding Task}" IsReadOnly="True" Header="Task" Width="275"/>
+                                <DataGridCheckBoxColumn Binding="{Binding IsDone, UpdateSourceTrigger=PropertyChanged}" 
                                                         IsReadOnly="False" Header="Done" Width="45"/>
+                                <DataGridCheckBoxColumn Binding="{Binding IsDelete, UpdateSourceTrigger=PropertyChanged}"
+                                                        IsReadOnly="False" Header="Delete" Width="45"/>
+                                
                             </DataGrid.Columns>
-                            <DataGrid.ContextMenu>
-                                <ContextMenu>
-                                    <ContextMenu.DataContext>
-                                        <viewModel:MainViewModel></viewModel:MainViewModel>
-                                    </ContextMenu.DataContext>
-                                    <MenuItem Command="{Binding RemoveCommand}" Header="Remove"/>
-                                </ContextMenu>
-                            </DataGrid.ContextMenu>
                         </DataGrid>
                     </Expander>
                 </DataTemplate>
             </ListBox.ItemTemplate>
-            <ListBox.ContextMenu>
-                <ContextMenu>
-                    <MenuItem Header="Remove" Command="{Binding RemoveCommand}"/>
-                </ContextMenu>
-            </ListBox.ContextMenu>
         </ListBox>
-        <Grid Row="1">
+        <Grid Row="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>

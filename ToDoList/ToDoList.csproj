@@ -11,4 +11,9 @@
       <PackageReference Include="Prism.Wpf" Version="8.1.97" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Remove="Icons\Refresh.png" />
+      <Resource Include="Icons\refresh.png" />
+    </ItemGroup>
+
 </Project>

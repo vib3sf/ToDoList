@@ -10,15 +10,17 @@ namespace ToDoList.ViewModel;
 public class MainViewModel : BindableBase
 {
     private MainModel _mainModel = new();
-    public Dictionary<string, List<TaskModel>> SortedTaskDictionary => _mainModel.SortedTaskList;
+    public Dictionary<string, List<TaskModel>> SortedTaskDictionary => _mainModel.SortTask();
     public DelegateCommand CreateCommand { get; }
     
     public string TaskTextBlock { get; set; }
     public DateTime? CreateTaskDate { get; set; }
-
-    public DelegateCommand RemoveCommand { get; set; }
     
     public TaskModel SelectedTask { get; set; }
+    
+    public DelegateCommand RefreshCommand { get; set; }
+
+    public static string CurrentDate => $"Current date is {DateTime.Today.ToShortDateString()}";
 
     public MainViewModel()
     {
@@ -34,9 +36,9 @@ public class MainViewModel : BindableBase
             
             RaisePropertyChanged("SortedTaskDictionary");
         });
-        RemoveCommand = new DelegateCommand(() =>
+        RefreshCommand = new DelegateCommand(() =>
         {
-            if (SelectedTask != null) _mainModel.RemoveTask(SelectedTask);
+            RaisePropertyChanged("SortedTaskDictionary");
         });
     }
 }
