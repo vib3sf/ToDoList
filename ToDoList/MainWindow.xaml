@@ -45,10 +45,11 @@
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Expander IsExpanded="True" Header="{Binding Key}">
-                        <DataGrid AutoGenerateColumns="False" GridLinesVisibility="None"
-                                  ItemsSource="{Binding Value}" CanUserAddRows="False" >
+                        <DataGrid AutoGenerateColumns="False" GridLinesVisibility="None" CanUserResizeColumns="False"  
+                                  ItemsSource="{Binding Value}" CanUserAddRows="False"
+                                   CanUserReorderColumns="False">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Binding="{Binding Task}" IsReadOnly="True" Header="Task" Width="275"/>
+                                <DataGridTextColumn Binding="{Binding Task}" IsReadOnly="True" Header="Task" Width="270"/>
                                 <DataGridCheckBoxColumn Binding="{Binding IsDone, UpdateSourceTrigger=PropertyChanged}" 
                                                         IsReadOnly="False" Header="Done" Width="45"/>
                                 <DataGridCheckBoxColumn Binding="{Binding IsDelete, UpdateSourceTrigger=PropertyChanged}"
