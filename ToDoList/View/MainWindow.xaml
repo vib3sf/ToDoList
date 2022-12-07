@@ -33,7 +33,7 @@
             <TextBlock Grid.ColumnSpan="2" HorizontalAlignment="Center" Text="Task Manager"/>
             <Button Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" HorizontalAlignment="Right" Margin="10"
                     Height="30" Width="30" Command="{Binding RefreshCommand}">
-                <Image Source="Icons/refresh.png"></Image>
+                <Image Source="../Icons/refresh.png"></Image>
             </Button>
             
             <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" 
