@@ -14,15 +14,13 @@ public class MainModel : BindableBase
     public void AddTask(string task, DateTime createDate)
     {
         TaskList.Add(new TaskModel(task, createDate));
-        SaveData();
-        RaisePropertyChanged("SortedTaskList");
+        Refresh();
     }
 
     public void AddTask(string task)
     {
         TaskList.Add(new TaskModel(task));
-        SaveData();
-        RaisePropertyChanged("SortedTaskList");
+        Refresh();
     }
 
     private void RemoveTask(TaskModel task)
@@ -58,7 +56,7 @@ public class MainModel : BindableBase
 
         foreach (var task in deletedTasks) RemoveTask(task);
         
-        RaisePropertyChanged("SortedTaskList");
+        Refresh();
         return taskDictionary;
     }
     
@@ -73,9 +71,21 @@ public class MainModel : BindableBase
     private void LoadData()
     {
         var xmlSerializer = new XmlSerializer(typeof(ObservableCollection<TaskModel>));
-        
-        using var fs = new FileStream("tasks.xml", FileMode.OpenOrCreate);
-        TaskList = (xmlSerializer.Deserialize(fs) as ObservableCollection<TaskModel>)!;
+        try
+        {
+            using var fs = new FileStream("tasks.xml", FileMode.OpenOrCreate);
+            TaskList = (xmlSerializer.Deserialize(fs) as ObservableCollection<TaskModel>)!;
+        }
+        catch (InvalidOperationException)
+        {
+            TaskList = new ObservableCollection<TaskModel>();
+        }
+    }
+
+    public void Refresh()
+    {
+        SaveData();
+        RaisePropertyChanged("SortedTaskList");
     }
 
     public MainModel()

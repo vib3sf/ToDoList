@@ -38,6 +38,7 @@ public class MainViewModel : BindableBase
         });
         RefreshCommand = new DelegateCommand(() =>
         {
+            _mainModel.Refresh();
             RaisePropertyChanged("SortedTaskDictionary");
         });
     }
