@@ -2,12 +2,15 @@
 
 namespace ToDoList;
 
+[Serializable]
 public class TaskModel
 {
     public string Task { get; set; }
     public bool IsDone { get; set; }
 
     public DateTime DeadLine { get; set; }
+    
+    public TaskModel() {}
 
     public TaskModel(string task)
     {

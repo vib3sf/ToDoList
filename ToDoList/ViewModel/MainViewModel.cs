@@ -10,7 +10,7 @@ namespace ToDoList.ViewModel;
 public class MainViewModel : BindableBase
 {
     private MainModel _mainModel = new();
-    public Dictionary<string, List<TaskModel>> SortedTaskDictionary { get; set; }
+    public Dictionary<string, List<TaskModel>> SortedTaskDictionary => _mainModel.SortedTaskList;
     public DelegateCommand CreateCommand { get; }
     
     public string TaskTextBlock { get; set; }
@@ -23,8 +23,7 @@ public class MainViewModel : BindableBase
     public MainViewModel()
     {
         _mainModel.PropertyChanged += (s, e) => { RaisePropertyChanged(e.PropertyName); };
-        SortedTaskDictionary = _mainModel.SortedTaskList;
-        
+
         CreateCommand = new DelegateCommand(() =>
         {
 
@@ -33,7 +32,6 @@ public class MainViewModel : BindableBase
             else
                 _mainModel.AddTask(TaskTextBlock!, (DateTime)CreateTaskDate!);
             
-            SortedTaskDictionary = _mainModel.SortedTaskList;
             RaisePropertyChanged("SortedTaskDictionary");
         });
         RemoveCommand = new DelegateCommand(() =>

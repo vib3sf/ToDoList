@@ -1,33 +1,37 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
+using System.Xml.Serialization;
 using Prism.Mvvm;
 
 namespace ToDoList;
 
 public class MainModel : BindableBase
 {
-    private readonly ObservableCollection<TaskModel> _taskList = new();
+    public ObservableCollection<TaskModel> TaskList { get; set; } = new();
     public Dictionary<string, List<TaskModel>> SortedTaskList { get; private set; }
 
     public void AddTask(string task, DateTime createDate)
     {
-        _taskList.Add(new TaskModel(task, createDate));
+        TaskList.Add(new TaskModel(task, createDate));
         SortedTaskList = SortTask();
+        SaveData();
         RaisePropertyChanged("SortedTaskList");
     }
 
     public void AddTask(string task)
     {
-        _taskList.Add(new TaskModel(task));
+        TaskList.Add(new TaskModel(task));
         SortedTaskList = SortTask();
+        SaveData();
         RaisePropertyChanged("SortedTaskList");
     }
 
     public void RemoveTask(TaskModel task)
     {
-        _taskList.Remove(task);
+        TaskList.Remove(task);
     }
 
     public Dictionary<string, List<TaskModel>> SortTask()
@@ -37,7 +41,7 @@ public class MainModel : BindableBase
             ["Overdue"] = new(),
             ["Without date"] = new()
         };
-        foreach (var task in _taskList)
+        foreach (var task in TaskList)
         {
             if (task.IsDone)
                 continue;
@@ -55,12 +59,26 @@ public class MainModel : BindableBase
         RaisePropertyChanged("SortedTaskList");
         return taskDictionary;
     }
+    
+    private void SaveData()
+    {
+        var xmlSerializer = new XmlSerializer(typeof(ObservableCollection<TaskModel>));
+
+        using var fs = new FileStream("tasks.xml", FileMode.Create);
+        xmlSerializer.Serialize(fs, TaskList);
+    }
+
+    private void LoadData()
+    {
+        var xmlSerializer = new XmlSerializer(typeof(ObservableCollection<TaskModel>));
+        
+        using var fs = new FileStream("tasks.xml", FileMode.OpenOrCreate);
+        TaskList = (xmlSerializer.Deserialize(fs) as ObservableCollection<TaskModel>)!;
+    }
 
     public MainModel()
     {
-        _taskList.Add(new TaskModel("почесать жопу", DateTime.Today));
-        _taskList.Add(new TaskModel("почесать жопу", DateTime.Today));
-        _taskList.Add(new TaskModel("почесать жопу", new DateTime(2225, 3, 4)));
+        LoadData();
         SortedTaskList = SortTask();
     }
 

@@ -21,11 +21,11 @@
         <ListBox ItemsSource="{Binding SortedTaskDictionary}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Expander Header="{Binding Key}">
+                    <Expander IsExpanded="True" Header="{Binding Key}">
                         <DataGrid AutoGenerateColumns="False"
                                   ItemsSource="{Binding Value}">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Binding="{Binding Task}" IsReadOnly="False" Header="Task"
+                                <DataGridTextColumn Binding="{Binding Task}" IsReadOnly="True" Header="Task"
                                                     Width="320"/>
                                 <DataGridCheckBoxColumn Binding="{Binding Path=IsDone, UpdateSourceTrigger=PropertyChanged}" 
                                                         IsReadOnly="False" Header="Done" Width="45"/>
