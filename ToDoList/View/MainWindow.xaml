@@ -56,7 +56,7 @@
                                   ItemsSource="{Binding Value}" CanUserAddRows="False"
                                    CanUserReorderColumns="False">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Binding="{Binding Task}" IsReadOnly="False" Header="Task" Width="210"/>
+                                <DataGridTextColumn Binding="{Binding Task}" IsReadOnly="False" Header="Task" Width="190"/>
                                 <DataGridTextColumn Binding="{Binding ShortDeadLine}" IsReadOnly="True" Header="Dead line" Width="70"/>
                                 <DataGridCheckBoxColumn Binding="{Binding IsDone, UpdateSourceTrigger=PropertyChanged}" 
                                                         IsReadOnly="False" Header="Done" Width="45"/>
