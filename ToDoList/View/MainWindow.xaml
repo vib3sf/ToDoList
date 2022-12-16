@@ -12,6 +12,9 @@
         <viewModel:MainViewModel/>
     </Window.DataContext>
     
+    <Window.InputBindings>
+        <KeyBinding Key="R" Modifiers="Control" Command="{Binding RefreshCommand}"/>
+    </Window.InputBindings>
     
     <Grid>
         <Grid.RowDefinitions>
