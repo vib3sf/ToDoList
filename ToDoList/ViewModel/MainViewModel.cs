@@ -8,17 +8,15 @@ namespace ToDoList.ViewModel;
 public class MainViewModel : BindableBase
 {
     private readonly MainModel _mainModel = new();
-    public Dictionary<string, List<TaskModel>> SortedTaskDictionary => _mainModel.SortTask();
+    public Dictionary<string, List<TaskModel>> SortedTaskDictionary => _mainModel.SortTask(SearchTextBox);
     public DelegateCommand CreateCommand { get; }
     
     public string TaskTextBlock { get; set; }
     public DateTime? CreateTaskDate { get; set; }
-    
-    public TaskModel SelectedTask { get; set; }
-    
     public DelegateCommand RefreshCommand { get; set; }
 
     public static string CurrentDate => $"Current date is {DateTime.Today.ToShortDateString()}";
+    public string SearchTextBox { get; set; }
 
     public MainViewModel()
     {

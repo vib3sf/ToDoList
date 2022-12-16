@@ -10,6 +10,7 @@ public class TaskModel
 
     public bool IsDelete { get; set; }
     public DateTime DeadLine { get; set; }
+    public string ShortDeadLine => DeadLine.ToShortDateString();
     
     public TaskModel() {}
 
@@ -23,6 +24,7 @@ public class TaskModel
     public TaskModel(string task, DateTime deadLine) : this(task)
     {
         DeadLine = deadLine;
+        
     }
     
 }

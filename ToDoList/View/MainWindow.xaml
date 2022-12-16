@@ -24,6 +24,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
@@ -37,11 +38,17 @@
             </Button>
             
             <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" 
-                       Text="{Binding CurrentDate}"></TextBlock>
+                       Text="{Binding CurrentDate}"/>
+            <TextBox Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Center" Width="175" Margin="5"
+                     Text="{Binding SearchTextBox, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                <TextBox.InputBindings>
+                    <KeyBinding Command="{Binding RefreshCommand}" Key="Enter"/>
+                </TextBox.InputBindings>
+            </TextBox>
             
         </Grid>
         
-        <ListBox Grid.Row="1" ItemsSource="{Binding SortedTaskDictionary}" SelectedItem="{Binding SelectedTask}">
+        <ListBox Grid.Row="1" ItemsSource="{Binding SortedTaskDictionary}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Expander IsExpanded="True" Header="{Binding Key}">
@@ -49,7 +56,8 @@
                                   ItemsSource="{Binding Value}" CanUserAddRows="False"
                                    CanUserReorderColumns="False">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Binding="{Binding Task}" IsReadOnly="True" Header="Task" Width="270"/>
+                                <DataGridTextColumn Binding="{Binding Task}" IsReadOnly="False" Header="Task" Width="210"/>
+                                <DataGridTextColumn Binding="{Binding ShortDeadLine}" IsReadOnly="True" Header="Dead line" Width="70"/>
                                 <DataGridCheckBoxColumn Binding="{Binding IsDone, UpdateSourceTrigger=PropertyChanged}" 
                                                         IsReadOnly="False" Header="Done" Width="45"/>
                                 <DataGridCheckBoxColumn Binding="{Binding IsDelete, UpdateSourceTrigger=PropertyChanged}"

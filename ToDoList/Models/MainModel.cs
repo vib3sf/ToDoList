@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Windows;
 using System.Xml.Serialization;
 using Prism.Mvvm;
 
@@ -10,14 +11,26 @@ namespace ToDoList;
 public class MainModel : BindableBase
 {
     private ObservableCollection<TaskModel> TaskList { get; set; } = new();
+
     public void AddTask(string task, DateTime createDate)
     {
+        if (task == null)
+        {
+            MessageBox.Show("Task is empty.");
+            return;
+        }
         TaskList.Add(new TaskModel(task, createDate));
         Refresh();
     }
 
     public void AddTask(string task)
     {
+        if (task == null)
+        {
+            MessageBox.Show("Task is empty.");
+            return;
+        }
+
         TaskList.Add(new TaskModel(task));
         Refresh();
     }
@@ -27,8 +40,9 @@ public class MainModel : BindableBase
         TaskList.Remove(task);
     }
 
-    public Dictionary<string, List<TaskModel>> SortTask()
+    public Dictionary<string, List<TaskModel>> SortTask(string search = "")
     {
+        search ??= "";
         var taskDictionary = new Dictionary<string, List<TaskModel>>
         {
             ["Overdue"] = new(),
@@ -38,6 +52,8 @@ public class MainModel : BindableBase
         var deletedTasks = new List<TaskModel>();
         foreach (var task in TaskList)
         {
+            if (!task.Task.Contains(search))
+                continue;
             if (task.IsDelete)
                 deletedTasks.Add(task);
             else if (task.IsDone)
