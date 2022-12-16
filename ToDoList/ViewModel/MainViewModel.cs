@@ -16,7 +16,7 @@ public class MainViewModel : BindableBase
     public DelegateCommand RefreshCommand { get; set; }
 
     public static string CurrentDate => $"Current date is {DateTime.Today.ToShortDateString()}";
-    public string SearchTextBox { get; set; }
+    public string? SearchTextBox { get; set; }
 
     public MainViewModel()
     {

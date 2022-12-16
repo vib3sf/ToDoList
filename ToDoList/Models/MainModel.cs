@@ -40,7 +40,7 @@ public class MainModel : BindableBase
         TaskList.Remove(task);
     }
 
-    public Dictionary<string, List<TaskModel>> SortTask(string search = "")
+    public Dictionary<string, List<TaskModel>> SortTask(string? search)
     {
         search ??= "";
         var taskDictionary = new Dictionary<string, List<TaskModel>>
